@@ -36,7 +36,7 @@ Private Const FILE_END                      As Long = 2
 '--- for WideCharToMultiByte
 Private Const CP_UTF8                       As Long = 65001
 
-Private Declare Function CLSIDFromString Lib "ole32.dll" (ByVal lpsz As Long, pclsid As Any) As Long
+Private Declare Function CLSIDFromString Lib "ole32" (ByVal lpsz As Long, pclsid As Any) As Long
 #If ImplUseShared = 0 Then
     Private Declare Function WideCharToMultiByte Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long, lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpDefaultChar As Long, ByVal lpUsedDefaultChar As Long) As Long
     Private Declare Function MultiByteToWideChar Lib "kernel32" (ByVal CodePage As Long, ByVal dwFlags As Long, lpMultiByteStr As Any, ByVal cchMultiByte As Long, ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
@@ -1055,6 +1055,7 @@ Private m_laSstKeyPositions()   As Long
 Private m_lSstCount             As Long
 Private m_lSstCapacity          As Long
 Private m_sName                 As String
+Private m_sSheetName            As String
 Private m_sType                 As String
 Private m_oXmlDocument          As Object
 #If ImplUseShared = 0 Then
@@ -1171,6 +1172,14 @@ End Property
 
 Property Let Name(sValue As String)
     m_sName = sValue
+End Property
+
+Property Get SheetName() As String
+    SheetName = m_sSheetName
+End Property
+
+Property Let SheetName(sValue As String)
+    m_sSheetName = sValue
 End Property
 
 Property Get Type_() As String
@@ -1852,7 +1861,10 @@ End Function
 '= shared strings table ==================================================
 
 Public Function SstGetIndex(sText As String) As Long
-    SstGetIndex = m_uaSstHashEntries(pvSstGetInternal(sText)).Index
+    Dim lIdx            As Long
+    
+    lIdx = pvSstGetInternal(sText)
+    SstGetIndex = m_uaSstHashEntries(lIdx).Index
 End Function
 
 Public Function SstGetPosition(sText As String) As Long

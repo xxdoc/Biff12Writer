@@ -113,7 +113,7 @@ End Function
 '=========================================================================
 
 Property Get PartFolder(sPartName As String) As String
-    SearchCollection m_uState.PartFolders, "#" & sPartName, PartFolder
+    SearchCollection m_uState.PartFolders, "#" & sPartName, RetVal:=PartFolder
 End Property
 
 Property Let PartFolder(sPartName As String, sValue As String)
@@ -207,6 +207,10 @@ Property Get SheetPart(Optional ByVal Index As Long = 1) As cBiff12Part
         Set m_uState.SheetParts(Index) = SheetPart
         AddRelation m_uState.WorkbookPart, SheetPart
     End If
+End Property
+
+Property Get SheetPartCount() As Long
+  SheetPartCount = pvUbound(m_uState.SheetParts)
 End Property
 
 Property Get DrawingPart(Optional ByVal Index As Long = 1) As cBiff12Part
@@ -575,4 +579,3 @@ End Sub
         DebugInstanceTerm STR_MODULE_NAME, m_sDebugID
     End Sub
 #End If
-
